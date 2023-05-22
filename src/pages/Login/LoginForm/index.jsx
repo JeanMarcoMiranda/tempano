@@ -8,22 +8,26 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { Controller } from "react-hook-form";
 
-export const LoginForm = ({ handleSubmit, control }) => (
+export const LoginForm = ({ handleSubmit, control, errors }) => (
   <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
     <Controller
       control={control}
-      name="email"
+      name="user"
+      rules={{
+        required: "El campo Nombre de usuario es requerido",
+      }}
       render={({ field: { onChange } }) => (
         <TextField
           margin="normal"
           required
           fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
+          id="user"
+          label="Nombre de usuario"
+          name="user"
           autoFocus
           onChange={onChange}
+          error={!!errors.user}
+          helperText={errors.user?.message}
         />
       )}
     />
@@ -31,17 +35,22 @@ export const LoginForm = ({ handleSubmit, control }) => (
     <Controller
       control={control}
       name="password"
+      rules={{
+        required: "El campo Contraseña es requerido",
+      }}
       render={({ field: { onChange } }) => (
         <TextField
           margin="normal"
           required
           fullWidth
           name="password"
-          label="Password"
+          label="Contraseña"
           type="password"
           id="password"
           autoComplete="current-password"
           onChange={onChange}
+          error={!!errors.password}
+          helperText={errors.password?.message}
         />
       )}
     />

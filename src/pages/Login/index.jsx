@@ -1,19 +1,20 @@
 import * as React from "react";
+// - MUI components
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
-
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 // - Page structure components
 import { LoginForm } from "./LoginForm";
+// - External libraries
 import { useForm } from "react-hook-form";
 import { UserAuthContext } from "../../store/context";
 import { useNavigate } from "react-router-dom";
+import { getEnvVariables } from "../../helpers/getEnvVariables";
 
 const Copyright = (props) => {
   return (
@@ -36,21 +37,46 @@ const Copyright = (props) => {
 const defaultTheme = createTheme();
 
 export const LoginPage = () => {
+  const { VITE_API_URL } = getEnvVariables();
   const userContext = React.useContext(UserAuthContext);
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    user: "",
+    password: "",
+  });
 
-  const handleSendForm = (data) => {
-    console.log(data);
-    if (data.email && data.password) {
-      const access_token = "token";
+  // -- Send login request method
+  const handleLoginSendForm = async (data) => {
+    // -- Request vairables configuration
+    const LOGIN_URL = `${VITE_API_URL}/auth/login`;
+    const LOGIN_REQUEST_PARAMS = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch(LOGIN_URL, LOGIN_REQUEST_PARAMS);
+
+    if (response.ok) {
+      const dataParsed = await response.json();
+      const { access_token, auth } = dataParsed;
 
       if (userContext) {
-        userContext.login({ access_token });
+        userContext.login({ user: auth, access_token });
       }
 
+      localStorage.setItem("user", JSON.stringify(auth));
       localStorage.setItem("token", access_token);
       navigate("/", { replace: true });
+    } else {
+      console.log("Login Error: Unknown error || Server error");
     }
   };
 
@@ -75,8 +101,9 @@ export const LoginPage = () => {
 
           {/* Login Section */}
           <LoginForm
-            handleSubmit={handleSubmit(handleSendForm)}
+            handleSubmit={handleSubmit(handleLoginSendForm)}
             control={control}
+            errors={errors}
           />
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
