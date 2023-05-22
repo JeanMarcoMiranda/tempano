@@ -47,7 +47,6 @@ export const LoginForm = ({ handleSubmit, control, errors }) => (
           label="Contraseña"
           type="password"
           id="password"
-          autoComplete="current-password"
           onChange={onChange}
           error={!!errors.password}
           helperText={errors.password?.message}
@@ -62,17 +61,5 @@ export const LoginForm = ({ handleSubmit, control, errors }) => (
     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
       Sign In
     </Button>
-    <Grid container>
-      <Grid item xs>
-        <Link href="#" variant="body2">
-          Forgot password?
-        </Link>
-      </Grid>
-      <Grid item>
-        <Link href="#" variant="body2">
-          {"Don't have an account? Sign Up"}
-        </Link>
-      </Grid>
-    </Grid>
   </Box>
 );

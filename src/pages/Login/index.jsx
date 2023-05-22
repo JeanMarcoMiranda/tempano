@@ -52,11 +52,11 @@ export const LoginPage = () => {
   // -- Send login request method
   const handleLoginSendForm = async (data) => {
     // -- Request vairables configuration
-    const LOGIN_URL = `${VITE_API_URL}/auth/login`;
+    //const LOGIN_URL = `${VITE_API_URL}/auth/login`;
+    const LOGIN_URL = `https://api.tempano.net/api/v2/auth/login`;
     const LOGIN_REQUEST_PARAMS = {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
