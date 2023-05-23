@@ -67,7 +67,7 @@ export const Photos = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <TableContainer component={Box} sx={{ width: "100%" }}>
         <Table sx={{ display: "flex", flexDirection: "column" }}>
           <TableHead>
@@ -223,6 +223,6 @@ export const Photos = () => {
           </form>
         </Box>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
