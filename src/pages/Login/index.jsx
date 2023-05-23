@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { UserAuthContext } from "../../store/context";
 import { useNavigate } from "react-router-dom";
 import { getEnvVariables } from "../../helpers/getEnvVariables";
+import axios from "axios"
 
 const Copyright = (props) => {
   return (
@@ -51,13 +52,23 @@ export const LoginPage = () => {
 
   // -- Send login request method
   const handleLoginSendForm = async (data) => {
+    const LOGIN_URL = `https://api.tempano.net/api/panel/auth/login`;
+
+    console.log("data value: ", data)
+    const response = await axios.post(LOGIN_URL, data)
+
+    console.log(response)
+
     // -- Request vairables configuration
     //const LOGIN_URL = `${VITE_API_URL}/auth/login`;
-    const LOGIN_URL = `https://api.tempano.net/api/v2/auth/login`;
+    /*const LOGIN_URL = `https://api.tempano.net/api/panel/auth/login`;
     const LOGIN_REQUEST_PARAMS = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
       },
       body: JSON.stringify(data),
     };
@@ -77,7 +88,7 @@ export const LoginPage = () => {
       navigate("/", { replace: true });
     } else {
       console.log("Login Error: Unknown error || Server error");
-    }
+    }*/
   };
 
   return (
